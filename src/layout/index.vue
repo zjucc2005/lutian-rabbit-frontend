@@ -1,9 +1,18 @@
-<script setup>
+<script>
     import Sidebar from './components/Sidebar.vue'
     import Navbar from './components/Navbar.vue'
     import AppMain from './components/AppMain.vue'
     import { useSidebarStore } from '@/stores/sidebar'
-    const sidebar = useSidebarStore()
+    export default {
+        components: {
+            Sidebar, Navbar, AppMain
+        },
+        data() {
+            return {
+                sidebar: useSidebarStore()
+            }
+        }
+    }
 </script>
 
 <template>
@@ -36,5 +45,8 @@
     .el-header {
         padding: 0;
         height: 50px;
+    }
+    .el-main {
+        padding: 10px 15px;
     }
 </style>

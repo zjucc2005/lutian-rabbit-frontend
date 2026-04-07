@@ -1,6 +1,12 @@
-<script setup>
+<script>
     import { useSidebarStore } from '@/stores/sidebar'
-    const sidebar = useSidebarStore()
+    export default {
+        data() {
+            return {
+                sidebar: useSidebarStore()
+            }
+        }
+    }
 </script>
 
 <template>

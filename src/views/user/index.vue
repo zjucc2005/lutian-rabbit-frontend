@@ -1,51 +1,61 @@
-<script setup>
+<script>
     import { onMounted, reactive } from 'vue';
     import { ElNotification } from 'element-plus';
-
-    const users = reactive([
-        {   
-            id: 1,
-            staff_no: '19352',
-            name: '蔡畅',
-            gender: '男',
-            department: '总经办',
-            phone: '123-12341234',
-            mobile: '12312341234',
-            email: 'chang.cai@lt.com',
-            status: 'active',
-            last_signed_in_at: '2026-01-01',
-            last_signed_in_ip: '192.168.11.11'
-        }
-    ])
-
-    onMounted(() => {
-        for (let i = 0; i < 20; i++) {
-            users.push({
-                id: 1,
-                staff_no: '19352',
-                name: '蔡畅',
-                gender: '男',
-                department: '总经办',
-                phone: '123-12341234',
-                mobile: '12312341234',
-                email: 'chang.cai@lt.com',
-                status: i % 2 == 1 ? 'active' : 'unactive',
-                last_signed_in_at: '2026-01-01',
-                last_signed_in_ip: '192.168.11.11'
+    export default {
+        data(){
+            return {
+                users: [
+                    {   
+                        id: 1,
+                        staff_no: '19352',
+                        name: '蔡畅',
+                        gender: '男',
+                        department: '总经办',
+                        phone: '123-12341234',
+                        mobile: '12312341234',
+                        email: 'chang.cai@lt.com',
+                        status: 'active',
+                        last_signed_in_at: '2026-01-01',
+                        last_signed_in_ip: '192.168.11.11'
+                    }
+                ]
+            }
+        },
+        mounted() {
+            this.$http.get('/login').then(res => {
+                console.log('res', res)
+            }).catch(err => {
+                console.log('err', err)
             })
+            for (let i = 0; i < 30; i++) {
+                this.users.push({
+                    id: 1,
+                    staff_no: '19352',
+                    name: '蔡畅',
+                    gender: '男',
+                    department: '总经办',
+                    phone: '123-12341234',
+                    mobile: '12312341234',
+                    email: 'chang.cai@lt.com',
+                    status: i % 2 == 1 ? 'active' : 'unactive',
+                    last_signed_in_at: '2026-01-01',
+                    last_signed_in_ip: '192.168.11.11'
+                })
+            }
+        },
+        methods: {
+            handleEditUser() {
+                ElNotification({
+                    title: 'Operation',
+                    message: 'handle edit user'
+                })
+            }
         }
-    })
-    
-    const handleEditUser = () => {
-        ElNotification({
-            title: 'Operation',
-            message: 'handle edit user'
-        })
     }
 </script>
 
 <template>
-    <el-table :data="users" style="width: 100%" :loading="true">
+    <el-table :data="users" border>
         <el-table-column prop="id" label="ID" fixed width="60" />
         <el-table-column prop="name" label="姓名" fixed width="80"/>
         <el-table-column prop="gender" label="性别" width="60" />

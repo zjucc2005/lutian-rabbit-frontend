@@ -1,9 +1,16 @@
-<script setup>
+<script>
     import { useSidebarStore } from '@/stores/sidebar'
-    const sidebar = useSidebarStore()
-
-    const handleSidebarToggle = () => {
-        sidebar.toggle()
+    export default {
+        data() {
+            return {
+                sidebar: useSidebarStore()
+            }
+        },
+        methods: {
+            handleSidebarToggle() {
+                this.sidebar.toggle()
+            }
+        }
     }
 </script>
 
@@ -20,11 +27,14 @@
         </el-icon>
         <!-- breadcrumb path -->
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/dashboard' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>
-            <a href="/">path1</a>
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>path2</el-breadcrumb-item>
+            <!-- <el-breadcrumb-item :to="{ path: '/dashboard' }">首页</el-breadcrumb-item> -->
+            <transition-group name="breadcrumb">
+                <el-breadcrumb-item v-for="(item, index) in ['首页', ...($route.meta.breadcrumb || [])]" :key="index"
+                    :to="item == '首页' ? '/dashboard' : ''"
+                    >
+                    {{ item }}
+                </el-breadcrumb-item>
+            </transition-group>
         </el-breadcrumb>
         <!-- dropdown menu -->
         <el-dropdown trigger="click">
@@ -39,7 +49,9 @@
                 <el-dropdown-item>Action 1</el-dropdown-item>
                 <el-dropdown-item>Action 2</el-dropdown-item>
                 <el-dropdown-item>Action 3</el-dropdown-item>
-                <el-dropdown-item divided>Logout</el-dropdown-item>
+                <el-dropdown-item divided>
+                    <router-link to="/login">Logout</router-link>
+                </el-dropdown-item>
             </el-dropdown-menu>
             </template>
         </el-dropdown>
@@ -58,5 +70,19 @@
     }
     .el-breadcrumb {
         flex: 1;
+    }
+    /* breadcrumb transition */
+    .breadcrumb-move,
+    .breadcrumb-enter-active,
+    .breadcrumb-leave-active {
+        transition: all 0.5s;
+    }
+    .breadcrumb-enter,
+    .breadcrumb-leave-active {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    .breadcrumb-leave-active {
+        position: absolute;
     }
 </style>
